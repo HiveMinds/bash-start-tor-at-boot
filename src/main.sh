@@ -6,7 +6,8 @@ source dependencies/bash-log/src/main.sh
 LOG_LEVEL_ALL # set log level to all, otherwise, NOTICE, INFO, DEBUG, TRACE will not be logged.
 
 # Load prerequisites installation.
-source src/ubuntu_system_probes.sh
+source src/activate_systemct_services.sh
+source src/uwf_status.sh
 source src/installation.sh
 
 # Execute prerequisites installation.
