@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function configure_tor() {
+function configure_tor_to_start_at_boot() {
   ensure_service_is_started "ssh"
   ensure_service_is_started "tor"
   ensure_service_starts_at_boot "ssh"

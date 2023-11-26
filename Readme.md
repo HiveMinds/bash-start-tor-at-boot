@@ -43,16 +43,11 @@ After including this dependency you can use the functions in this module like:
 # Source the file containing the functions
 source "$(dirname "${BASH_SOURCE[0]}")/src/main.sh"
 
-# Call the desired installation functions.
-ensure_apt_pkg "curl" 1
-ensure_snap_pkg "brave"
-ensure_pip_pkg "twine" 1
+# Execute prerequisites installation.
+install_tor_and_ssh_requirements
 
-
-# Call the desired installation functions.
-apt_remove "curl" 0
-snap_remove "brave"
-pip_remove "twine" 1
+# Configure tor such that it starts now, and when the pc reboots.
+configure_tor_to_start_at_boot
 ```
 
 The `0` and `1` after the package name indicate whether it will update the

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function install_ssh_requirements() {
+function install_tor_and_ssh_requirements() {
   ensure_apt_pkg "openssh-server" 0
   ensure_apt_pkg "openssh-server" 0
   ensure_apt_pkg "curl" 0

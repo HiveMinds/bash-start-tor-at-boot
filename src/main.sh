@@ -51,8 +51,3 @@ function load_functions() {
 
 }
 load_functions
-
-# Execute prerequisites installation.
-install_ssh_requirements
-
-configure_tor
