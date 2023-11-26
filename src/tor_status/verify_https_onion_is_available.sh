@@ -24,7 +24,7 @@ ensure_https_services_run_locally() {
   # Don't kill the ssh service at port 22 that may already be running.
   if [ "$project_name" == "dash" ]; then
     run_dash_in_background "$local_project_port" "$project_name" &
-    green_msg "Dash is running in the background for: $project_name at port:$local_project_port. Proceeding."
+    NOTICE "Dash is running in the background for: $project_name at port:$local_project_port. Proceeding."
 
   elif [[ "$project_name" == "ssh" ]]; then
     ssh_server_prerequisites
@@ -54,7 +54,7 @@ verify_onion_address_is_reachable() {
     while true; do
       # TODO: include check to see if $TOR_LOG_FILEPATH contains:[err]
       if [ "$(onion_address_is_available "$onion_address")" == "FOUND" ]; then
-        green_msg "SSL certificate for:$onion_address is valid! Verified by connecting to that onion."
+        NOTICE "SSL certificate for:$onion_address is valid! Verified by connecting to that onion."
 
         return 0
       fi
@@ -103,7 +103,7 @@ verify_ssh_onion_domain_is_reachable() {
       # TODO: include check to see if $TOR_LOG_FILEPATH contains:[err]
       if [ "$(ssh_onion_is_available "$onion_domain" "$public_port_to_access_onion")" == "FOUND" ]; then
         echo "Verified you can ssh into this server with command:"
-        green_msg "torsocks ssh $(whoami)@$onion_domain" "true"
+        NOTICE "torsocks ssh $(whoami)@$onion_domain" "true"
         return 0
       fi
 

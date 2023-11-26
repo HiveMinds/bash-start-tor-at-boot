@@ -28,7 +28,7 @@ onion_address_is_available() {
   elif [[ "$ping_output" == *"1 connects, 1 ok, 0,00% failed, time"* ]]; then
     echo "FOUND"
   else
-    echo "Error, did not find status."
+    ERROR "Error, did not find status."
     exit 5
   fi
 }
@@ -40,9 +40,9 @@ assert_onion_address_is_available() {
 
   local onion_address
   onion_address="$(get_onion_address "$project_name" "$use_https" "$public_port_to_access_onion")"
-
+  NOTICE "onion_address=\n$onion_address"
   if [ "$(onion_address_is_available "$onion_address")" != "FOUND" ]; then
-    echo "Error, was not able to connect to:$onion_address"
+    ERROR "Error, was not able to connect to:$onion_address"
     exit 5
   fi
 
@@ -52,11 +52,10 @@ get_onion_domain() {
   local project_name="$1"
   local onion_exists
   onion_exists=$(check_onion_url_exists_in_hostname "$project_name")
-
   if [[ "$onion_exists" == "FOUND" ]]; then
     sudo cat "$TOR_SERVICE_DIR/$project_name/hostname"
   else
-    echo "Error, the onion url was not found in file."
+    ERROR "Error, the onion url was not found in file."
     exit 6
   fi
 }
@@ -89,6 +88,7 @@ ssh_onion_is_available() {
   local onion_domain="$1"
   local public_port_to_access_onion="$2"
 
+  # TODO: log the output of the below command to file with INFO "ssh_check_output=$COMMAND_OUTPUT"
   if torsocks nc -zv "$onion_domain" "$public_port_to_access_onion" >/dev/null 2>&1; then
     echo "FOUND"
   else

@@ -2,10 +2,11 @@
 
 function install_ssh_requirements() {
   ensure_apt_pkg "openssh-server" 0
+  ensure_apt_pkg "openssh-server" 0
+  ensure_apt_pkg "curl" 0
+  ensure_apt_pkg "net-tools" 0
+  ensure_apt_pkg "openssh-client" 0
+  ensure_apt_pkg "torsocks" 0
+  ensure_apt_pkg "tor" 1
   ensure_pip_pkg "dash" 0
-
-  ensure_service_is_started "ssh"
-  ensure_service_is_started "tor"
-  ensure_service_starts_at_boot "ssh"
-  ensure_uwf_is_enabled
 }
