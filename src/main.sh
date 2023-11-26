@@ -1,11 +1,13 @@
 #!/bin/bash
 
-source src/installation/install_apt.sh
-source src/installation/install_pip.sh
-source src/installation/install_snap.sh
+# Load the installer dependency.
+source dependencies/bash-package-installer/src/main.sh
+source dependencies/bash-log/src/main.sh
+LOG_LEVEL_ALL # set log level to all, otherwise, NOTICE, INFO, DEBUG, TRACE will not be logged.
 
-source src/logging/cli_logging.sh
+# Load prerequisites installation.
+source src/ubuntu_system_probes.sh
+source src/installation.sh
 
-source src/uninstallation/uninstall_apt.sh
-source src/uninstallation/uninstall_pip.sh
-source src/uninstallation/uninstall_snap.sh
+# Execute prerequisites installation.
+install_ssh_requirements

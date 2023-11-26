@@ -1,19 +1,14 @@
-# Unit tested Bash project template with Pre-commit
+# Sets up tor over SSH
 
-Call this dependency from another bash script to safely install and remove:
-
-- pip
-- apt
-- snap
-  packages
+Ensures you can access your computer from anywhere in the world with a single command.
 
 ## Install this bash dependency in other repo
 
 - In your other repo, include a file named: `.gitmodules` that includes:
 
 ```sh
-[submodule "dependencies/package_installer"]
- path = dependencies/package_installer
+[submodule "dependencies/bash-package-installer"]
+ path = dependencies/bash-package-installer
  url = https://github.com/hiveminds/bash-package-installer
 ```
 
@@ -21,21 +16,21 @@ Call this dependency from another bash script to safely install and remove:
 
 ```sh
 # Remove the submodules if they were still in the repo.
-git rm --cached dependencies/package_installer/bash-package-installer
+git rm --cached dependencies/bash-package-installer
 
 # Remove and re-create the submodule directory.
-rm -r dependencies/package_installer/bash-package-installer
-mkdir -p dependencies/package_installer/bash-package-installer
+rm -r dependencies/bash-package-installer
+mkdir -p dependencies/bash-package-installer
 
 # (Re) add the BATS submodules to this repository.
-git submodule add --force https://github.com/hiveminds/bash-package-installer dependencies/package_installer/bash-package-installer
+git submodule add --force https://github.com/hiveminds/bash-package-installer dependencies/bash-package-installer
 ```
 
 - Install the submodule with:
 
 ```sh
-chmod +x install_dependencies.sh
-./install_dependencies.sh
+chmod +x install-dependencies.sh
+./install-dependencies.sh
 ```
 
 ## Call this bash dependency from other repo
