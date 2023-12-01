@@ -42,7 +42,9 @@ function load_functions() {
 
   # Load file_editing helper functions.
   # shellcheck disable=SC1091
-  source "$script_dir/verification/assert_not_exist.sh"
+  source "$script_dir/verification/assert_not_exists.sh"
+  # shellcheck disable=SC1091
+  source "$script_dir/verification/assert_not_exists.sh"
   # shellcheck disable=SC1091
   source "$script_dir/verification/assert_exists.sh"
 
