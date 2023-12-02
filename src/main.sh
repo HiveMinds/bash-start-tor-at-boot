@@ -32,7 +32,7 @@ function load_functions() {
 
   # Load onion domain helper functions.
   # shellcheck disable=SC1091
-  source "$script_dir/onion_domain/make_onion_domain.sh"
+  source "$script_dir/onion_domain/stop_tor_if_it_is_running.sh"
   # shellcheck disable=SC1091
   source "$script_dir/onion_domain/onion_domain_exists.sh"
 
