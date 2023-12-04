@@ -22,3 +22,7 @@ git submodule add --force https://github.com/ztombol/bats-assert test/libs/bats-
 git submodule add --force https://github.com/hiveminds/bash-package-installer dependencies/bash-package-installer
 git submodule add --force https://github.com/hiveminds/bash-log dependencies/bash-log
 git submodule update --remote --recursive
+
+# Remove the submodules from the index.
+git rm -r -f --cached test/libs/bats
+git rm -r -f --cached dependencies
