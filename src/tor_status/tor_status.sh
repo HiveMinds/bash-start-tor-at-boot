@@ -48,6 +48,8 @@ assert_onion_address_is_available() {
 
 }
 
+# TODO: make it fail if the hostname file that contains the onion does not exist.
+# TODO: make it fail if the onion is not valid.
 get_onion_domain() {
   local project_name="$1"
   local onion_exists
