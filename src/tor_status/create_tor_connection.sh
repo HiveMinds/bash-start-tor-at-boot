@@ -121,33 +121,33 @@ function add_repo_to_user_home() {
   local repo_url="$2"
   local relative_target_filepath="$3"
 
-  local repo_path="$HOME/$repo_name"
+  local abs_repo_path="$HOME/$repo_name"
 
   # Check if the repository directory already exists
-  if [[ ! -d "$repo_path" ]]; then
+  if [[ ! -d "$abs_repo_path" ]]; then
     # If not, clone the repository
-    git clone "$repo_url" "$HOME/$repo_path"
+    git clone "$repo_url" "$abs_repo_path"
   else
     # If it exists, maybe update it or handle accordingly
     # Add your logic here if needed
-    NOTICE "Repository already exists at: $repo_path"
+    NOTICE "Repository already exists at: $abs_repo_path"
   fi
 
-  manual_assert_file_exists "$repo_path/$relative_target_filepath"
-  NOTICE "Target file exists at:$repo_path/$relative_target_filepath"
+  manual_assert_file_exists "$abs_repo_path/$relative_target_filepath"
+  NOTICE "Target file exists at:$abs_repo_path/$relative_target_filepath"
 }
 
 function install_this_repo_dependencies() {
   local repo_name="$1"
-  local repo_path="$HOME/$repo_name"
+  local abs_repo_path="$HOME/$repo_name"
 
-  local absolute_script_path="$root_repo_path/src/main.sh"
+  local absolute_script_path="$abs_repo_path/src/main.sh"
   manual_assert_file_exists "$absolute_script_path"
 
-  chmod +x "$root_repo_path/install_dependencies.sh"
+  chmod +x "$abs_repo_path/install_dependencies.sh"
   chmod +x "$absolute_script_path"
 
   # Install dependencies
-  "$root_repo_path"/./install_dependencies.sh
+  "$abs_repo_path"/./install_dependencies.sh
   NOTICE "Dependencies installed."
 }
