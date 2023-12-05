@@ -53,18 +53,20 @@ function ensure_tor_package_runs_at_boot() {
   local absolute_script_path="$root_repo_path/$relative_script_path"
   manual_assert_file_exists "$absolute_script_path"
 
+  local crontab_line
+  crontab_line="@reboot /bin/bash $absolute_script_path"
   # Add entry to cron to execute the script at boot
-  (
-    crontab -l
-    echo "@reboot /bin/bash $absolute_script_path"
-  ) | crontab -
-
-  # This function may be called multiple times, ensure it is only added once
-  # by the command used to add the line to the crontab.
-  (
-    crontab -l
-    echo "@reboot /bin/bash $absolute_script_path"
-  ) | crontab -
+  # Check if the line already exists in crontab
+  if ! crontab -l | grep -q "$crontab_line"; then
+    # If the line doesn't exist, add it to crontab
+    (
+      crontab -l 2>/dev/null
+      echo "$crontab_line"
+    ) | crontab -
+    NOTICE "ADDING ENTRY to crontab."
+  else
+    NOTICE "Entry already exists in crontab."
+  fi
 
   # Ensure the crontab contains the entry.
   if [[ "$(crontab -l | grep "$absolute_script_path")" == "" ]]; then
