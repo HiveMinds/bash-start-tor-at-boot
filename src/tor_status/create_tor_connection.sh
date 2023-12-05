@@ -53,6 +53,9 @@ function ensure_tor_package_runs_at_boot() {
   local absolute_script_path="$root_repo_path/$relative_script_path"
   manual_assert_file_exists "$absolute_script_path"
 
+  add_repo_to_user_home "bash-ssh-over-tor" "https://github.com/HiveMinds/bash-ssh-over-tor.git" "src/main.sh"
+  install_this_repo_dependencies "bash-ssh-over-tor"
+
   local crontab_line
   crontab_line="@reboot /bin/bash $absolute_script_path && start_tor_in_background"
   # Add entry to cron to execute the script at boot
@@ -111,4 +114,40 @@ EOF
 
   NOTICE "Setup complete. Script:$absolute_script_path will run at boot."
 
+}
+
+function add_repo_to_user_home() {
+  local repo_name="$1"
+  local repo_url="$2"
+  local relative_target_filepath="$3"
+
+  local repo_path="$HOME/$repo_name"
+
+  # Check if the repository directory already exists
+  if [[ ! -d "$repo_path" ]]; then
+    # If not, clone the repository
+    git clone "$repo_url" "$HOME/$repo_path"
+  else
+    # If it exists, maybe update it or handle accordingly
+    # Add your logic here if needed
+    NOTICE "Repository already exists at: $repo_path"
+  fi
+
+  manual_assert_file_exists "$repo_path/$relative_target_filepath"
+  NOTICE "Target file exists at:$repo_path/$relative_target_filepath"
+}
+
+function install_this_repo_dependencies() {
+  local repo_name="$1"
+  local repo_path="$HOME/$repo_name"
+
+  local absolute_script_path="$root_repo_path/src/main.sh"
+  manual_assert_file_exists "$absolute_script_path"
+
+  chmod +x "$root_repo_path/install_dependencies.sh"
+  chmod +x "$absolute_script_path"
+
+  # Install dependencies
+  "$root_repo_path"/./install_dependencies.sh
+  NOTICE "Dependencies installed."
 }
