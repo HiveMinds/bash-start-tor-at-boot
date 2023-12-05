@@ -1,20 +1,25 @@
 #!/bin/bash
 start_tor_in_background() {
+  working_dir="$1"
+  # If working dir is not empty and does not end in a slash, add it.
+  if [[ "$working_dir" != "" ]] && [[ "${working_dir: -1}" != "/" ]]; then
+    working_dir="$working_dir/"
+  fi
   local wait_time_sec=260
 
-  sudo tor | tee "$TOR_LOG_FILEPATH" >/dev/null &
+  sudo tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
   start_time=$(date +%s)
 
   while true; do
     error_substring='\[err\]'
-    if [ "$(file_contains_string "$error_substring" "$TOR_LOG_FILEPATH")" == "FOUND" ]; then
-      INFO "$TOR_LOG_FILEPATH contained: $error_substring, so we are stopping it and restarting it."
+    if [ "$(file_contains_string "$error_substring" "$working_dir$TOR_LOG_FILENAME")" == "FOUND" ]; then
+      INFO "$working_dir$TOR_LOG_FILENAME contained: $error_substring, so we are stopping it and restarting it."
       kill_tor_if_already_running
       sleep 5
       INFO "Tor is stopped, starting it again."
-      sudo tor | tee "$TOR_LOG_FILEPATH" >/dev/null &
+      sudo tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
     else
-      NOTICE "The $TOR_LOG_FILEPATH did not contain: $error_substring, so we are checking the tor status."
+      NOTICE "The $working_dir$TOR_LOG_FILENAME did not contain: $error_substring, so we are checking the tor status."
       local tor_status
       tor_status="$(tor_is_connected)"
       INFO "tor_status=$tor_status"
@@ -60,7 +65,7 @@ function ensure_tor_package_runs_at_boot() {
 
   local crontab_line
   # crontab_line="@reboot /bin/bash $absolute_script_path && start_tor_in_background"
-  crontab_line="@reboot /bin/bash -c \"source $absolute_script_path && start_tor_in_background\""
+  crontab_line="@reboot /bin/bash -c \"source $absolute_script_path && start_tor_in_background $HOME/$repo_name/\""
   # Add entry to cron to execute the script at boot
   # Check if the line already exists in crontab
   if ! crontab -l | grep -q "$crontab_line"; then
