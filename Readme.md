@@ -12,7 +12,7 @@ Ensures you can access your computer from anywhere in the world with a single co
  url = https://github.com/hiveminds/bash-package-installer
 ```
 
-- Create a file named `install_dependencies.sh` with content:
+- Create a file named `install-dependencies.sh` with content:
 
 ```sh
 # Remove the submodules if they were still in the repo.
