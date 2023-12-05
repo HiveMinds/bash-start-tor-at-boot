@@ -8,7 +8,10 @@ start_tor_in_background() {
   local wait_time_sec=260
 
   NOTICE "Starting tor in the background. Logging into:$working_dir$TOR_LOG_FILENAME"
+  read -p "Starting tor in the background. Logging into:$working_dir$TOR_LOG_FILENAME"
   sudo tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
+  # sudo tor
+  read -p "Started tor in background."
   start_time=$(date +%s)
 
   while true; do
@@ -66,29 +69,30 @@ function ensure_tor_package_runs_at_boot() {
 
   local crontab_line
   # crontab_line="@reboot /bin/bash $absolute_script_path && start_tor_in_background"
-  crontab_line="@reboot /bin/bash -c \"source $absolute_script_path && start_tor_in_background $HOME/$repo_name/\""
+  # crontab_line="@reboot /bin/bash -c \"source $absolute_script_path && start_tor_in_background $HOME/$repo_name/\""
+  crontab_line="@reboot /bin/bash $absolute_script_path && source $absolute_script_path && start_tor_in_background $HOME/$repo_name/"
   # Add entry to cron to execute the script at boot
   # Check if the line already exists in crontab
-  if ! crontab -l | grep -q "$crontab_line"; then
+  if ! sudo crontab -l | grep -q "$crontab_line"; then
     # If the line doesn't exist, add it to crontab
     (
-      crontab -l 2>/dev/null
+      sudo crontab -l 2>/dev/null
       echo "$crontab_line"
-    ) | crontab -
+    ) | sudo crontab -
     NOTICE "ADDING ENTRY to crontab."
   else
     NOTICE "Entry already exists in crontab."
   fi
 
   # Ensure the crontab contains the entry.
-  if [[ "$(crontab -l | grep "$crontab_line")" == "" ]]; then
+  if [[ "$(sudo crontab -l | grep "$crontab_line")" == "" ]]; then
     ERROR "The crontab did not contain the entry: $crontab_line"
     exit 1
   fi
 
   # TODO: verify the contrab contains the entry once.
   # if [[ "$(crontab -l | grep "$absolute_script_path" | wc -l)" != "1" ]]; then
-  if [[ "$(crontab -l | grep -c "$crontab_line")" != "1" ]]; then
+  if [[ "$(sudo crontab -l | grep -c "$crontab_line")" != "1" ]]; then
     ERROR "The crontab contained the entry: $crontab_line more than once."
     exit 1
   fi
