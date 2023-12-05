@@ -39,7 +39,6 @@ LOG_LEVEL_ALL # set log level to all, otherwise, NOTICE, INFO, DEBUG, TRACE will
 B_LOG --file log/multiple-outputs.txt --file-prefix-enable --file-suffix-enable
 
 # Load prerequisites installation.
-NOTICE "Loading from:$START_TOR_AT_BOOT_SRC_PATH"
 function load_functions() {
 
   # shellcheck disable=SC1091

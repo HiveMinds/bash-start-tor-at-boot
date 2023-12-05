@@ -104,7 +104,7 @@ Description=Start Tor at boot
 
 [Service]
 Type=simple
-ExecStart=/bin/bash $absolute_script_path
+ExecStart=/bin/bash $absolute_script_path && start_tor_in_background
 
 [Install]
 WantedBy=multi-user.target
