@@ -7,6 +7,7 @@ start_tor_in_background() {
   fi
   local wait_time_sec=260
 
+  NOTICE "Starting tor in the background. Logging into:$working_dir$TOR_LOG_FILENAME"
   sudo tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
   start_time=$(date +%s)
 
