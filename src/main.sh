@@ -31,7 +31,7 @@ done
 # Load dependencies that can be a parent dependency (=this module is a
 # dependency of that module/dependency).
 for parent_dep in "${START_TOR_AT_BOOT_PARENT_DEPS[@]}"; do
-  load_parent_dependency "calling_repo_root_path" "$START_TOR_AT_BOOT_PATH" "$parent_dep"
+  load_parent_dependency "$START_TOR_AT_BOOT_PATH" "$parent_dep"
 done
 
 LOG_LEVEL_ALL # set log level to all, otherwise, NOTICE, INFO, DEBUG, TRACE will not be logged.
