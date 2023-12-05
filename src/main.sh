@@ -1,5 +1,6 @@
 #!/bin/bash
-export bash_start_tor_at_boot_is_loaded=true
+# shellcheck disable=SC2034
+bash_start_tor_at_boot_is_loaded=true
 
 # This module is a dependency for (and has these dependencies):
 START_TOR_AT_BOOT_PARENT_DEPS=("bash-start-tor-at-boot" "bash-ssh-over-tor")
