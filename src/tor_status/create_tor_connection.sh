@@ -142,9 +142,10 @@ function install_this_repo_dependencies() {
   local abs_repo_path="$HOME/$repo_name"
 
   local absolute_script_path="$abs_repo_path/src/main.sh"
+  local absolute_dependencies_installer_path="$abs_repo_path/install-dependencies.sh"
   manual_assert_file_exists "$absolute_script_path"
 
-  chmod +x "$abs_repo_path/install-dependencies.sh"
+  chmod +x "$absolute_dependencies_installer_path"
   chmod +x "$absolute_script_path"
 
   # Install dependencies
