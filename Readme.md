@@ -19,8 +19,8 @@ Ensures you can access your computer from anywhere in the world with a single co
 git rm --cached dependencies/bash-package-installer
 
 # Remove and re-create the submodule directory.
-rm -r dependencies/bash-package-installer
-mkdir -p dependencies/bash-package-installer
+rm -r "$SCRIPT_PATH/dependencies"/bash-package-installer
+mkdir -p "$SCRIPT_PATH/dependencies"/bash-package-installer
 
 # (Re) add the BATS submodules to this repository.
 git submodule add --force https://github.com/hiveminds/bash-package-installer dependencies/bash-package-installer
