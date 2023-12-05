@@ -44,3 +44,69 @@ start_tor_in_background() {
   done
 
 }
+
+# Running sudo tor is something else than ensuring the tor service runs at
+# boot.Both are required for one to be able to ssh into the device over tor.
+function ensure_tor_package_runs_at_boot() {
+  local root_repo_path="$1"
+  local relative_script_path="dependencies/bash-start-tor-at-boot/src/tor_status/create_tor_connection.sh"
+  local absolute_script_path="$root_repo_path/$relative_script_path"
+  manual_assert_file_exists "$absolute_script_path"
+
+  # Add entry to cron to execute the script at boot
+  (
+    crontab -l
+    echo "@reboot /bin/bash $absolute_script_path"
+  ) | crontab -
+
+  # This function may be called multiple times, ensure it is only added once
+  # by the command used to add the line to the crontab.
+  (
+    crontab -l
+    echo "@reboot /bin/bash $absolute_script_path"
+  ) | crontab -
+
+  # Ensure the crontab contains the entry.
+  if [[ "$(crontab -l | grep "$absolute_script_path")" == "" ]]; then
+    ERROR "The crontab did not contain the entry: @reboot /bin/bash $absolute_script_path"
+    exit 1
+  fi
+
+  # TODO: verify the contrab contains the entry once.
+  # if [[ "$(crontab -l | grep "$absolute_script_path" | wc -l)" != "1" ]]; then
+  if [[ "$(crontab -l | grep -c "$absolute_script_path")" != "1" ]]; then
+    ERROR "The crontab contained the entry: @reboot /bin/bash $absolute_script_path more than once."
+    exit 1
+  fi
+
+  # Define the variables
+  local systemd_service_unit_path="/etc/systemd/system/tor_startup.service"
+
+  # Store the content in a variable
+  local systemd_service_unit_content
+  systemd_service_unit_content=$(
+    cat <<EOF
+[Unit]
+Description=Start Tor at boot
+
+[Service]
+Type=simple
+ExecStart=/bin/bash $absolute_script_path
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  )
+
+  # Add the content to the specified file path
+  echo "$systemd_service_unit_content" | sudo tee "$systemd_service_unit_path" >/dev/null
+
+  # Verify the file content is as expected.
+  assert_file_content_equal "$systemd_service_unit_path" "$systemd_service_unit_content"
+
+  # Enable the systemd service
+  sudo systemctl enable tor_startup.service
+
+  NOTICE "Setup complete. Script:$absolute_script_path will run at boot."
+
+}
