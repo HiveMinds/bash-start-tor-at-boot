@@ -69,15 +69,15 @@ function ensure_tor_package_runs_at_boot() {
   fi
 
   # Ensure the crontab contains the entry.
-  if [[ "$(crontab -l | grep "$absolute_script_path")" == "" ]]; then
-    ERROR "The crontab did not contain the entry: @reboot /bin/bash $absolute_script_path"
+  if [[ "$(crontab -l | grep "$crontab_line")" == "" ]]; then
+    ERROR "The crontab did not contain the entry: $crontab_line"
     exit 1
   fi
 
   # TODO: verify the contrab contains the entry once.
   # if [[ "$(crontab -l | grep "$absolute_script_path" | wc -l)" != "1" ]]; then
-  if [[ "$(crontab -l | grep -c "$absolute_script_path")" != "1" ]]; then
-    ERROR "The crontab contained the entry: @reboot /bin/bash $absolute_script_path more than once."
+  if [[ "$(crontab -l | grep -c "$crontab_line")" != "1" ]]; then
+    ERROR "The crontab contained the entry: $crontab_line more than once."
     exit 1
   fi
 
