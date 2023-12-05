@@ -58,7 +58,6 @@ function ensure_tor_package_runs_at_boot() {
   local repo_name="bash-ssh-over-tor"
   local relative_script_path="src/main.sh"
   local absolute_script_path="$HOME/$repo_name/$relative_script_path"
-  
 
   add_repo_to_user_home "$repo_name" "https://github.com/HiveMinds/$repo_name.git" "$relative_script_path"
   manual_assert_file_exists "$absolute_script_path"
