@@ -48,16 +48,19 @@ start_tor_in_background() {
 # Running sudo tor is something else than ensuring the tor service runs at
 # boot.Both are required for one to be able to ssh into the device over tor.
 function ensure_tor_package_runs_at_boot() {
-  local root_repo_path="$1"
-  local relative_script_path="dependencies/bash-start-tor-at-boot/src/tor_status/create_tor_connection.sh"
-  local absolute_script_path="$root_repo_path/$relative_script_path"
+
+  # TODO: move into global variables.
+  local repo_name="bash-ssh-over-tor"
+  local relative_script_path="src/main.sh"
+  local absolute_script_path="$HOME/$repo_name/$relative_script_path"
   manual_assert_file_exists "$absolute_script_path"
 
-  add_repo_to_user_home "bash-ssh-over-tor" "https://github.com/HiveMinds/bash-ssh-over-tor.git" "src/main.sh"
-  install_this_repo_dependencies "bash-ssh-over-tor"
+  add_repo_to_user_home "$repo_name" "https://github.com/HiveMinds/$repo_name.git" "$relative_script_path"
+  install_this_repo_dependencies "$repo_name"
 
   local crontab_line
-  crontab_line="@reboot /bin/bash $absolute_script_path && start_tor_in_background"
+  # crontab_line="@reboot /bin/bash $absolute_script_path && start_tor_in_background"
+  crontab_line="@reboot /bin/bash -c \"source $absolute_script_path && start_tor_in_background\""
   # Add entry to cron to execute the script at boot
   # Check if the line already exists in crontab
   if ! crontab -l | grep -q "$crontab_line"; then
