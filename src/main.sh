@@ -5,23 +5,23 @@ START_TOR_AT_BOOT_PARENT_DEPS=("bash-start-tor-at-boot" "bash-ssh-over-tor")
 # This module has dependencies:
 START_TOR_AT_BOOT_REQUIRED_DEPS=("bash-log" "bash-package-installer")
 
-START_TOR_AT_BOOT_SRC_PATH=$(dirname "$(readlink -f "$0")")
+START_TOR_AT_BOOT_SRC_PATH=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
 START_TOR_AT_BOOT_PATH=$(readlink -f "$START_TOR_AT_BOOT_SRC_PATH/../")
 
 # Loads the bash log dependency, and the dependency loader.
-function load_bash_log_dependency() {
+function load_dependency_manager() {
   if [ -d "$START_TOR_AT_BOOT_PATH/dependencies/bash-log" ]; then
     # shellcheck disable=SC1091
-    source "$START_TOR_AT_BOOT_PATH/dependencies/bash-log/src/main.sh"
+    source "$START_TOR_AT_BOOT_PATH/dependencies/bash-log/src/dependency_manager.sh"
   elif [ -d "$START_TOR_AT_BOOT_PATH/../bash-log" ]; then
     # shellcheck disable=SC1091
-    source "$START_TOR_AT_BOOT_PATH/../bash-log/src/main.sh"
+    source "$START_TOR_AT_BOOT_PATH/../bash-log/src/dependency_manager.sh"
   else
     echo "ERROR: bash-log dependency is not found."
     exit 1
   fi
 }
-load_bash_log_dependency
+load_dependency_manager
 
 # Load required dependencies.
 for required_dependency in "${START_TOR_AT_BOOT_REQUIRED_DEPS[@]}"; do
