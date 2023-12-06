@@ -8,7 +8,7 @@ start_tor_in_background() {
   local wait_time_sec=260
 
   NOTICE "Starting tor in the background. Logging into:$working_dir$TOR_LOG_FILENAME"
-  sudo tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
+  tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
 
   start_time=$(date +%s)
 
@@ -20,7 +20,7 @@ start_tor_in_background() {
       kill_tor_if_already_running
       sleep 5
       INFO "Tor is stopped, starting it again."
-      sudo tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
+      tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
     else
       NOTICE "The $working_dir$TOR_LOG_FILENAME did not contain: $error_substring, so we are checking the tor status."
       local tor_status
@@ -53,7 +53,7 @@ start_tor_in_background() {
 
 }
 
-# Running sudo tor is something else than ensuring the tor service runs at
+# Running tor is something else than ensuring the tor service runs at
 # boot.Both are required for one to be able to ssh into the device over tor.
 function ensure_tor_package_runs_at_boot() {
 
@@ -72,26 +72,26 @@ function ensure_tor_package_runs_at_boot() {
   crontab_line="@reboot /bin/bash $absolute_script_path && source $absolute_script_path && start_tor_in_background $HOME/$repo_name/"
   # Add entry to cron to execute the script at boot
   # Check if the line already exists in crontab
-  if ! sudo crontab -l | grep -q "$crontab_line"; then
+  if ! crontab -l | grep -q "$crontab_line"; then
     # If the line doesn't exist, add it to crontab
     (
-      sudo crontab -l 2>/dev/null
+      crontab -l 2>/dev/null
       echo "$crontab_line"
-    ) | sudo crontab -
+    ) | crontab -
     NOTICE "ADDING ENTRY to crontab."
   else
     NOTICE "Entry already exists in crontab."
   fi
 
   # Ensure the crontab contains the entry.
-  if [[ "$(sudo crontab -l | grep "$crontab_line")" == "" ]]; then
+  if [[ "$(crontab -l | grep "$crontab_line")" == "" ]]; then
     ERROR "The crontab did not contain the entry: $crontab_line"
     exit 1
   fi
 
   # TODO: verify the contrab contains the entry once.
   # if [[ "$(crontab -l | grep "$absolute_script_path" | wc -l)" != "1" ]]; then
-  if [[ "$(sudo crontab -l | grep -c "$crontab_line")" != "1" ]]; then
+  if [[ "$(crontab -l | grep -c "$crontab_line")" != "1" ]]; then
     ERROR "The crontab contained the entry: $crontab_line more than once."
     exit 1
   fi

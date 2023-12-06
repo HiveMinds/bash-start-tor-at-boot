@@ -23,9 +23,9 @@
 #######################################
 check_onion_url_exists_in_hostname() {
   local project_name="$1"
-  if sudo test -f "$TOR_SERVICE_DIR/$project_name/hostname"; then
+  if test -f "$TOR_SERVICE_DIR/$project_name/hostname"; then
     local file_content
-    file_content=$(sudo cat "$TOR_SERVICE_DIR/$project_name/hostname")
+    file_content=$(cat "$TOR_SERVICE_DIR/$project_name/hostname")
     # Verify that the file's content is a valid onion URL
     if [[ "$file_content" =~ ^[a-z0-9]{56}\.onion$ ]]; then
       echo "FOUND" # file exists and has valid onion URL as its content

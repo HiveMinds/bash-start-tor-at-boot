@@ -13,4 +13,8 @@ function install_tor_and_ssh_requirements() {
   ensure_apt_pkg "python3-virtualenv" 1
   ensure_apt_pkg "python3-pip" 1
   ensure_pip_pkg "dash" 0
+
+  # ensure tor can be started without sudo.
+  sudo chmod 700 -R /var/lib/tor/*
+  sudo chown -R $whoami /var/lib/tor/
 }

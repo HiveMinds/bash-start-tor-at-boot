@@ -46,8 +46,8 @@ verify_onion_address_is_reachable() {
 
     yellow_msg "Now starting tor, and waiting (max) $wait_time_sec seconds to determine whether your tor website is reachable at:"
 
-    # Start "sudo tor" in the background
-    sudo tor | tee "$TOR_LOG_FILENAME" >/dev/null &
+    # Start "tor" in the background
+    tor | tee "$TOR_LOG_FILENAME" >/dev/null &
 
     # Set the start time of the function
     start_time=$(date +%s)
@@ -93,8 +93,8 @@ verify_ssh_onion_domain_is_reachable() {
     yellow_msg "Now starting tor, and waiting (max) $wait_time_sec seconds to determine whether your ssh website is reachable at:"
     yellow_msg "$onion_domain"
 
-    # Start "sudo tor" in the background
-    sudo tor | tee "$TOR_LOG_FILENAME" >/dev/null &
+    # Start "tor" in the background
+    tor | tee "$TOR_LOG_FILENAME" >/dev/null &
 
     # Set the start time of the function
     start_time=$(date +%s)
