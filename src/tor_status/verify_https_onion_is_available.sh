@@ -52,7 +52,7 @@ verify_onion_address_is_reachable() {
     # Set the start time of the function
     start_time=$(date +%s)
     while true; do
-      # TODO: include check to see if $TOR_LOG_FILENAME contains:[err]
+      # TODO: include check to see if $TOR_LOG_FILENAME contains:\[err\]
       if [ "$(onion_address_is_available "$onion_address")" == "FOUND" ]; then
         NOTICE "SSL certificate for:$onion_address is valid! Verified by connecting to that onion."
 
@@ -100,7 +100,7 @@ verify_ssh_onion_domain_is_reachable() {
     start_time=$(date +%s)
     while true; do
 
-      # TODO: include check to see if $TOR_LOG_FILENAME contains:[err]
+      # TODO: include check to see if $TOR_LOG_FILENAME contains:\[err\]
       if [ "$(ssh_onion_is_available "$onion_domain" "$public_port_to_access_onion")" == "FOUND" ]; then
         echo "Verified you can ssh into this server with command:"
         NOTICE "torsocks ssh $(whoami)@$onion_domain" "true"
