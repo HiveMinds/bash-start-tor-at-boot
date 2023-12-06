@@ -15,11 +15,19 @@ start_tor_in_background() {
   while true; do
     error_substring='\[err\]'
     error_substring_two='[err]'
-    if [ "$(file_contains_string "$error_substring" "$working_dir$TOR_LOG_FILENAME")" == "FOUND" ] || [ "$(file_contains_string "$error_substring_two" "$working_dir$TOR_LOG_FILENAME")" == "FOUND" ]; then
+    if [ "$(file_contains_string "$error_substring" "$working_dir$TOR_LOG_FILENAME")" == "FOUND" ]; then
       INFO "$working_dir$TOR_LOG_FILENAME contained: $error_substring, so we are stopping it and restarting it."
+      read -rp "the content of the file is: $(cat "$working_dir$TOR_LOG_FILENAME"). Press enter to continue."
       kill_tor_if_already_running
       sleep 5
-      INFO "Tor is stopped, starting it again."
+      NOTICE "Retry starting tor."
+      tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
+    if [ "$(file_contains_string "$error_substring_two" "$working_dir$TOR_LOG_FILENAME")" == "FOUND" ] || [ "$(file_contains_string "$error_substring_two" "$working_dir$TOR_LOG_FILENAME")" == "FOUND" ]; then
+      INFO "$working_dir$TOR_LOG_FILENAME contained: $error_substring_two, so we are stopping it and restarting it."
+      read -rp "the content of the file is: $(cat "$working_dir$TOR_LOG_FILENAME"). Press enter to continue."
+      kill_tor_if_already_running
+      sleep 5
+      NOTICE "Retry starting tor."
       tor | tee "$working_dir$TOR_LOG_FILENAME" >/dev/null &
     else
       NOTICE "The $working_dir$TOR_LOG_FILENAME did not contain: $error_substring, so we are checking the tor status."
