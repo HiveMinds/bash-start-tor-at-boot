@@ -48,7 +48,7 @@ start_tor_in_background() {
     INFO "Waiting another 5 seconds before checking the tor status again."
 
     # Wait for 5 seconds before checking again.
-    sleep 5
+    sleep 20
   done
 
 }
