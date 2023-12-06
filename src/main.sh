@@ -55,7 +55,6 @@ function load_functions() {
   source "$START_TOR_AT_BOOT_SRC_PATH/configuration.sh"
 
   # Load tor helper functions.
-  read -rp "Loaded:$START_TOR_AT_BOOT_SRC_PATH/tor_status/create_tor_connection.sh"
   # shellcheck disable=SC1091
   source "$START_TOR_AT_BOOT_SRC_PATH/tor_status/create_tor_connection.sh"
   # shellcheck disable=SC1091
