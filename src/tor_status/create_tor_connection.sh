@@ -125,15 +125,15 @@ EOF
   )
 
   # Add the content to the specified file path
-  echo "$systemd_service_unit_content" | sudo tee "$systemd_service_unit_path" >/dev/null
+  #echo "$systemd_service_unit_content" | sudo tee "$systemd_service_unit_path" >/dev/null
 
   # Verify the file content is as expected.
-  assert_file_content_equal "$systemd_service_unit_path" "$systemd_service_unit_content"
+ # assert_file_content_equal "$systemd_service_unit_path" "$systemd_service_unit_content"
 
   # Enable the systemd service
-  sudo systemctl enable tor_startup.service
+#  sudo systemctl enable tor_startup.service
 
-  NOTICE "Setup complete. Script:$absolute_script_path will run at boot."
+  WARNING " skipped: SYSTEMD service Setup complete. Script:$absolute_script_path will run at boot."
 
 }
 
