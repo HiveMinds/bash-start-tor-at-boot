@@ -141,12 +141,12 @@ function add_script_to_user_home() {
   local abs_target_path="$HOME/$SELF_CONTAINED_START_TOR_SCRIPT_FILENAME"
 
   # Copyt the script from this repo into the target directory.
-  cp "$RELATIVE_SELF_CONTAINED_START_TOR_SCRIPT_PATH" "$abs_target_path"
+  cp "$ABSOLUTE_SELF_CONTAINED_START_TOR_SCRIPT_PATH" "$abs_target_path"
 
   # Check if the repository directory already exists
   if [[ ! -f "$abs_target_path" ]]; then
     # If not, clone the repository
-    ERROR "Failed to copy the file:$RELATIVE_SELF_CONTAINED_START_TOR_SCRIPT_PATH to:$abs_target_path"
+    ERROR "Failed to copy the file:$ABSOLUTE_SELF_CONTAINED_START_TOR_SCRIPT_PATH to:$abs_target_path"
   fi
 
   manual_assert_file_exists "$abs_target_path"
