@@ -1,13 +1,12 @@
 #!/bin/bash
 
-kill_tor_if_already_running() {
+function kill_tor_if_already_running() {
   local socks_port="$1"
 
   local output
   local normal_tor_closed
   while true; do
     output=$(netstat -ano | grep LISTEN | grep "$socks_port")
-    INFO "netstat output=$output"
     if [[ "$output" != "" ]]; then
       killall tor
       echo "Killed and stopped tor, because there was a tor instance running."
