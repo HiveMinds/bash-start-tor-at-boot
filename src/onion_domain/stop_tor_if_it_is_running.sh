@@ -2,7 +2,7 @@
 
 function kill_tor_if_already_running() {
   local socks_port="$1"
-
+  read -p "socks_port=$socks_port"
   local output
   local normal_tor_closed
   while true; do
