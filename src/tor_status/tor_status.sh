@@ -1,13 +1,17 @@
 #!/bin/bash
 get_tor_status() {
+  local socks_port="$1"
+  local working_dir="$2"
   local tor_status
-  tor_status=$(curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations | xargs)
+  tor_status="$(curl --socks5 localhost:"$socks_port" --socks5-hostname localhost:"$socks_port" -s https://check.torproject.org/ | cat | grep -m 1 Congratulations | xargs)"
   echo "$tor_status"
 }
 
 tor_is_connected() {
+  local socks_port="$1"
+  local working_dir="$2"
   local tor_status_outside
-  tor_status_outside=$(get_tor_status)
+  tor_status_outside="$(get_tor_status "$socks_port" "$working_dir")"
   # Reconnect tor if the system is disconnected.
   if [[ "$tor_status_outside" != *"Congratulations"* ]]; then
     echo "NOTFOUND"
