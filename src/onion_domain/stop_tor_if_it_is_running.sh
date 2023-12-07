@@ -25,10 +25,11 @@ function kill_tor_if_already_running() {
 
 assert_tor_is_not_running() {
   local output
+  assert_is_non_empty_string "$SOCKS_PORT"
   ensure_apt_pkg "net-tools" 1 # Required to run netstat.
-  output=$(netstat -ano | grep LISTEN | grep 9050)
+  output=$(netstat -ano | grep LISTEN | grep $SOCKS_PORT)
   if [[ "$output" != "" ]]; then
-    ERROR "ERROR, tor/something is still running on port 9050:$output"
+    ERROR "ERROR, tor/something is still running on port $SOCKS_PORT:$output"
     exit 6
   fi
 
