@@ -10,7 +10,7 @@ verify_service_is_reachable_on_onion() {
   # TODO: include support for GitLab onion.
   #if [[ "$project_name" != "gitlab" ]] && [[ "$project_name" != "ssh" ]]; then
   if [[ "$project_name" != "ssh" ]]; then
-    kill_tor_if_already_running
+    kill_tor_if_already_running "$SOCKS_PORT"
     verify_onion_address_is_reachable "$project_name" "$public_port_to_access_onion"
   elif [[ "$project_name" == "ssh" ]]; then
     verify_ssh_onion_domain_is_reachable "$public_port_to_access_onion"
@@ -66,7 +66,7 @@ verify_onion_address_is_reachable() {
 
       # If 2 minutes have passed, raise an exception and return 7
       if ((elapsed_time > wait_time_sec)); then
-        kill_tor_if_already_running
+        kill_tor_if_already_running "$SOCKS_PORT"
         echo >&2 "Error: $onion_address is not reachable after $wait_time_sec seconds."
         exit 6
       fi
@@ -114,7 +114,7 @@ verify_ssh_onion_domain_is_reachable() {
 
       # If 2 minutes have passed, raise an exception and return 7
       if ((elapsed_time > wait_time_sec)); then
-        kill_tor_if_already_running
+        kill_tor_if_already_running "$SOCKS_PORT"
         echo >&2 "Error: $onion_address is not reachable after $wait_time_sec seconds."
         exit 6
       fi

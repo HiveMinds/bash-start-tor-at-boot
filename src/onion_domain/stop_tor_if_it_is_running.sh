@@ -2,6 +2,7 @@
 
 function kill_tor_if_already_running() {
   local socks_port="$1"
+  assert_is_non_empty_string "$socks_port"
   read -p "socks_port=$socks_port"
   local output
   local normal_tor_closed
