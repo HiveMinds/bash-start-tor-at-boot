@@ -11,7 +11,8 @@ TOR_LOG_FILENAME="tor_log.txt"
 VERBOSE="false"
 
 # This is to allow tor to run without sudo.
-SOCKS_PORT=9051
+# SOCKS_PORT=9051
+SOCKS_PORT=9050
 
 # GitLab
 GITLAB_RB_TEMPLATE_DIR="src/ssl_certs/add_ssl_certs_to_service/add_to_gitlab/"
