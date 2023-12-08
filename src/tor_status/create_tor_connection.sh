@@ -78,7 +78,8 @@ function ensure_tor_package_runs_at_boot() {
   manual_assert_file_exists "$absolute_script_path"
 
   local crontab_line
-  crontab_line="@reboot /bin/bash $absolute_script_path $HOME"
+  #crontab_line="@reboot /bin/bash $absolute_script_path $HOME"
+  crontab_line="@reboot tor"
   # Add entry to cron to execute the script at boot
   # Check if the line already exists in crontab
   if ! crontab -l | grep -q "$crontab_line"; then

@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "lint": "command shellcheck **/*.sh",
+    "list-sources": "echo ${BPKG_PACKAGE_SOURCES[@]} | sed 's/ /\n/g'"
+  },
+  "commands-description": {
+    "lint": "Execute shellcheck against all .sh files in project",
+    "list-sources": "Output package source files"
+  },
+  "description": "Ensures tor is installed, and runs in the background at boot, without sudo privileges.",
+  "global": true,
+  "install": "bash src/main.sh",
+  "name": "bpkg",
+  "repo": "HiveMinds/bash-start-tor-at-boot",
+  "version": "0.0.1"
+}
