@@ -133,7 +133,7 @@ EOF
   # Enable the systemd service
   #  sudo systemctl enable tor_startup.service
 
-  WARNING " skipped: SYSTEMD service Setup complete. Script:$absolute_script_path will run at boot."
+  WARN " skipped: SYSTEMD service Setup complete. Script:$absolute_script_path will run at boot."
 
 }
 
