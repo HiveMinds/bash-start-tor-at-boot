@@ -101,6 +101,7 @@ self_contained_kill_tor_if_already_running() {
     echo "netstat output=$output" >>"$working_dir$SCRIPT_LOG"
     if [[ "$output" != "" ]]; then
       killall tor
+      sudo systemctl stop tor.service
       echo "Killed and stopped tor, because there was a tor instance running." >>"$working_dir$SCRIPT_LOG "
       sleep 2
     else

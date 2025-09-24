@@ -9,7 +9,8 @@ function kill_tor_if_already_running() {
     output=$(netstat -ano | grep LISTEN | grep "$socks_port")
     if [[ "$output" != "" ]]; then
       killall tor
-      echo "Killed and stopped tor, because there was a tor instance running."
+      sudo systemctl stop tor.service
+      echo "Killed and stopped tor, because there was a tor instance running.B"
       sleep 2
     else
       NOTICE "Non-sudo tor is killed and stopped."
